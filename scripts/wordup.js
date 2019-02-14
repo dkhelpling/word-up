@@ -50,9 +50,7 @@ function addNewWordSubmission(word) {
   // Do we already have a wordSubmission with this word?
   // TODO 21
   // replace the hardcoded 'false' with the real answer
-  let alreadyUsed = model.wordSubmissions.filter(function(wrd) {
-    return wrd.word == word;
-  });
+  let alreadyUsed = model.wordSubmissions.filter(word2 => word2.word == word);
   // if the word is valid and hasn't already been used, add it
   if (containsOnlyAllowedLetters(word) && alreadyUsed == false) {
     model.wordSubmissions.push({ word: word });
@@ -84,15 +82,11 @@ function checkIfWordIsReal(word) {
       // If the response contains any results, then the word is legitimate.
       // Otherwise, it is not.
 
-      if (response.results.length > 0) {
-        theAnswer = true;
-      } else {
-        theAnswer = false;
-      }
+      let theAnswer = response.count > 0 ? true : false;
 
       // TODO 15
       // Update the corresponding wordSubmission in the model
-      model.wordSubmissions.forEach(function(submission) {
+      model.wordSubmissions.forEach(submission => {
         if (submission.word === word) {
           submission.isRealWord = theAnswer;
         }
@@ -131,11 +125,12 @@ function render() {
   // GAME -------------------------------------
 
   // clear stuff
-  $("#textbox").removeClass("bad-attempt");
+
   $("span").remove();
   $("#textbox").attr("disabled", false);
   $("#allowed-letters").empty();
   $("#word-submissions").empty();
+  $("#textbox").removeClass("bad-attempt");
 
   // TODO 10
   // Add a few things to the above code block (underneath "// clear stuff").
@@ -210,7 +205,6 @@ function wordSubmissionChip(wordSubmission) {
   // if we know the status of this word (real word or not), then add a green score or red X
   if (wordSubmission.hasOwnProperty("isRealWord")) {
     var scoreChip = $("<span></span>");
-    //.text("⟐");
     // TODO 17
     // give the scoreChip appropriate text content
 
